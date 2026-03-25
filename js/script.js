@@ -2,16 +2,15 @@ console.log('Stock Market Project Loaded');
 
 const BASE_URL = "http://localhost:5000";
 
-// ── PREDICT ──────────────────────────────────────────
 function getPrediction() {
-    const symbol = document.getElementById('stockSymbol').value;
+    const symbol = document.getElementById('stockSymbol').value.trim();
 
     if (!symbol) {
-        document.getElementById('predictionResult').innerText = "⚠️ Please enter a stock symbol.";
+        document.getElementById('predictionResult').innerHTML = "⚠️ Please enter a stock symbol.";
         return;
     }
 
-    document.getElementById('predictionResult').innerText = "Loading...";
+    document.getElementById('predictionResult').innerHTML = "⏳ Fetching live data...";
 
     fetch(`${BASE_URL}/predict`, {
         method: 'POST',
@@ -20,18 +19,37 @@ function getPrediction() {
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById('predictionResult').innerText =
-            `${data.symbol}: ${data.prediction} (${data.confidence})`;
+        if (data.error) {
+            document.getElementById('predictionResult').innerHTML = `❌ ${data.error}`;
+            return;
+        }
+
+        document.getElementById('predictionResult').innerHTML = `
+            <div class="result-card">
+                <h3>${data.symbol}</h3>
+                <table>
+                    <tr><td>💰 Current Price</td>  <td><b>${data.current_price}</b></td></tr>
+                    <tr><td>📈 Change</td>          <td><b>${data.change}</b></td></tr>
+                    <tr><td>🤖 Signal</td>          <td><b>${data.prediction}</b></td></tr>
+                    <tr><td>🎯 Confidence</td>      <td><b>${data.confidence}</b></td></tr>
+                    <tr><td>📊 7D Average</td>      <td><b>${data.avg_7d}</b></td></tr>
+                    <tr><td>📊 30D Average</td>     <td><b>${data.avg_30d}</b></td></tr>
+                    <tr><td>🔺 52W High</td>        <td><b>${data.high_52w}</b></td></tr>
+                    <tr><td>🔻 52W Low</td>         <td><b>${data.low_52w}</b></td></tr>
+                    <tr><td>📦 Volume</td>          <td><b>${data.volume}</b></td></tr>
+                    <tr><td>📉 Volume Signal</td>   <td><b>${data.volume_signal}</b></td></tr>
+                </table>
+            </div>
+        `;
     })
-    .catch(err => {
-        document.getElementById('predictionResult').innerText =
+    .catch(() => {
+        document.getElementById('predictionResult').innerHTML =
             "❌ Error: Make sure app.py is running in CMD.";
     });
 }
 
-// ── CONTACT FORM ─────────────────────────────────────
 function submitContact(event) {
-    event.preventDefault(); // stops page from reloading
+    event.preventDefault();
 
     const name    = document.getElementById('contactName').value;
     const email   = document.getElementById('contactEmail').value;
@@ -49,7 +67,7 @@ function submitContact(event) {
         document.getElementById('contactEmail').value = '';
         document.getElementById('contactMessage').value = '';
     })
-    .catch(err => {
+    .catch(() => {
         alert("❌ Error: Make sure app.py is running in CMD.");
     });
 }
