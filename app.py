@@ -11,12 +11,13 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
-    stock_symbol = data.get('symbol', 'UNKNOWN')
-    # Replace this with your actual ML prediction logic
+    stock_symbol = data.get('symbol', 'UNKNOWN')  # ✅ reads symbol from request
+    
+    # Replace this block later with your real ML model
     prediction = {
-        'symbol': stock_symbol,
-        'prediction': 'BUY',
-        'confidence': '78%'
+        'symbol': stock_symbol,        # ✅ sends symbol back
+        'prediction': 'BUY',           # ✅ fake result for now
+        'confidence': '78%'            # ✅ fake confidence for now
     }
     return jsonify(prediction)
 
