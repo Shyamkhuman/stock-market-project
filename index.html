@@ -10,7 +10,7 @@
     <header class="hero">
         <h1>🚀 AI Stock Market Prediction System</h1>
         <p>Forecast market trends with precision</p>
-        <a href="#features" class="btn btn-primary">Explore</a>
+        <a href="#predict" class="btn btn-primary">Explore</a>
     </header>
 
     <section id="features">
@@ -35,6 +35,16 @@
         </div>
     </section>
 
+    <!-- ✅ NEW: Prediction Section -->
+    <section id="predict">
+        <h2>📈 Get Stock Prediction</h2>
+        <div class="predict-box">
+            <input type="text" id="stockSymbol" placeholder="Enter stock symbol e.g. AAPL" />
+            <button onclick="getPrediction()" class="btn btn-primary">Predict</button>
+            <p id="predictionResult"></p>
+        </div>
+    </section>
+
     <section id="tech">
         <h2>💻 Technology</h2>
         <p>Python • TensorFlow • Pandas • Flask • HTML/CSS/JS</p>
@@ -42,10 +52,11 @@
 
     <section id="contact">
         <h2>📧 Contact</h2>
-        <form>
-            <input type="text" placeholder="Name" required>
-            <input type="email" placeholder="Email" required>
-            <textarea placeholder="Message" required></textarea>
+        <form onsubmit="submitContact(event)">
+            <!-- ✅ Added IDs to all inputs -->
+            <input type="text" id="contactName" placeholder="Name" required>
+            <input type="email" id="contactEmail" placeholder="Email" required>
+            <textarea id="contactMessage" placeholder="Message" required></textarea>
             <button type="submit" class="btn btn-primary">Send</button>
         </form>
     </section>
@@ -53,5 +64,8 @@
     <footer>
         <p>&copy; 2026 StockPredict AI</p>
     </footer>
+
+    <!-- ✅ Script linked at the bottom -->
+    <script src="js/script.js"></script>
 </body>
 </html>
