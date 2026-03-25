@@ -1,1 +1,32 @@
-from flask import Flask, request, jsonify\n\napp = Flask(__name__)\n\n@app.route('/')\ndef index():\n    return "Welcome to the Stock Market Prediction API!"\n\n@app.route('/predict', methods=['POST'])\ndef predict():\n    # Dummy implementation for prediction\n    data = request.get_json()\n    prediction = { 'prediction': 'fake_prediction_value' }  # Replace with actual prediction logic\n    return jsonify(prediction)\n\n@app.route('/contact', methods=['POST'])\ndef contact():\n    data = request.get_json()\n    # Process contact form submission here\n    # You can save it to the database or send an email\n    return jsonify({'status': 'success', 'message': 'Contact form submitted!'}), 200\n\nif __name__ == '__main__':\n    app.run(debug=True)\n
+from flask import Flask, request, jsonify
+from flask_cors import CORS  # ADD THIS
+
+app = Flask(__name__)
+CORS(app)  # ADD THIS — allows GitHub Pages to connect
+
+@app.route('/')
+def index():
+    return "Welcome to the Stock Market Prediction API!"
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    stock_symbol = data.get('symbol', 'UNKNOWN')
+    # Replace this with your actual ML prediction logic
+    prediction = {
+        'symbol': stock_symbol,
+        'prediction': 'BUY',
+        'confidence': '78%'
+    }
+    return jsonify(prediction)
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    data = request.get_json()
+    name = data.get('name', '')
+    email = data.get('email', '')
+    message = data.get('message', '')
+    return jsonify({'status': 'success', 'message': 'Contact form submitted!'}), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
